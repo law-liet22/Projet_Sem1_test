@@ -1,9 +1,8 @@
 package app;
-// import models.Affichage;
-// import models.MenuPrincipal;
-// import models.Terminal;
-// import models.VerifChoix;
-import models.*;
+import models.Affichage;
+import models.MenuPrincipal;
+import models.Terminal;
+import models.VerifChoix;
 import java.util.Scanner;
 
 import java.util.HashMap;
