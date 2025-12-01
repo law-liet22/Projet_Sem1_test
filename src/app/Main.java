@@ -2,24 +2,10 @@ package app;
 import models.MenuPrincipal;
 import services.*;
 import java.util.Scanner;
-import java.lang.Thread;
 import java.util.HashMap;
 
 public class Main 
 {
-
-    public static void attendre(int s)
-    {
-        int ms = s * 1000;
-        try
-        {
-            Thread.sleep(ms);
-        }
-        catch (InterruptedException e)
-        {
-            Thread.currentThread().interrupt();
-        }
-    }
     public static void main(String[] args)
     {
         Scanner monInput = new Scanner(System.in);
@@ -38,7 +24,8 @@ public class Main
 
             if (choix == -1)
             {
-                Affichage.afficherLn("Veuillez entrer un nombre valide.");
+                Terminal.effacerTerminal();
+                Affichage.afficherAvecPointsSecondes("Veuillez entrer un nombre entier non négatif valide");
             }
 
             else
@@ -51,6 +38,8 @@ public class Main
                 {
                     if (choix == sortie)
                     {
+                        monInput.close();
+                        return;
                         
                     }
 
@@ -66,15 +55,16 @@ public class Main
 
                     else
                     {
-                        Affichage.afficherLn("Le choix que vous avez entré n'est actuellement pas disponible.");
+                        Terminal.effacerTerminal();
+                        Affichage.afficherAvecPointsSecondes("Le choix que vous avez entré n'est actuellement pas disponible.");
                     }
                     
                 }
 
                 else
                 {
-                    Affichage.afficherLn("Veuillez entrer un nombre présent dans le menu.");
-                    attendre(3);
+                    Terminal.effacerTerminal();
+                    Affichage.afficherAvecPointsSecondes("Veuillez entrer un nombre présent dans le menu");
                 }
                 
             }

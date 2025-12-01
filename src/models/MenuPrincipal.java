@@ -1,5 +1,6 @@
 package models;
 import java.util.HashMap;
+import services.Terminal;
 
 public class MenuPrincipal {
     static HashMap<String, Integer> valeursMenu = new HashMap<>();
@@ -9,17 +10,11 @@ public class MenuPrincipal {
     static String modifier = "Modifier l'inventaire (ajouter, modifier, supprimer)";
     static int valModifier = 2;
 
-    public static void effacerTerminal() {
-    for (int i = 0; i < 50; i++) {
-        System.out.println();
-    }
-}
-
 
     public static void afficherMenu()
     {
 
-        effacerTerminal();
+        Terminal.effacerTerminal();
         
         System.out.println("""
                 ------------------------------
