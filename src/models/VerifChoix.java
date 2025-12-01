@@ -2,7 +2,20 @@ package models;
 import java.util.HashMap;
 
 public class VerifChoix {
-    public static int recupEtVerifChoix(String input)
+
+    public static int choixDansValeursMenu(HashMap<String, Integer> monHash, int choix)
+    {
+        for (int i : monHash.values())
+        {
+            if (choix == i)
+            {
+                return 99;
+            }
+        }
+        return -1;
+    }
+
+    public static int verifChoix(String input)
     {
         try {
         // Attempt to parse the input string to an integer
@@ -15,15 +28,23 @@ public class VerifChoix {
         }
     }
 
-    public static int choixDansValeursMenu(HashMap<String, Integer> monHash, int choix)
+    public static int verifChoix(String input, HashMap<String, Integer> monHash)
     {
-        for (int i : monHash.values())
+        try {
+        // Attempt to parse the input string to an integer
+        int intInput = Integer.parseInt(input);
+        if (choixDansValeursMenu(monHash, intInput) == 99)
         {
-            if (choix == i)
-            {
-                return 1;
-            }
+            return intInput;
         }
-        return -1;
+        else
+        {
+            return -2;
+        }
+        
+        } catch (NumberFormatException e) {
+            // If parsing fails, the input is not a valid integer
+            return -1;
+        }
     }
 }

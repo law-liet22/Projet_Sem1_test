@@ -19,7 +19,7 @@ public class Affichage {
     // Affiche un point toutes les 0,5 secondes
     for (int i = 0; i < 3; i++) {
         afficherSansLn("."); // affichage du point
-        Attendre.attendreDouble(1.5); // 0,5 seconde
+        Attendre.attendreDouble(1); // 0,5 seconde
         //System.out.flush();    // force l'affichage immédiat
     }
 

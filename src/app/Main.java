@@ -1,6 +1,6 @@
 package app;
 import models.Affichage;
-import models.MenuPrincipal;
+import models.Menus;
 import models.Terminal;
 import models.VerifChoix;
 import java.util.Scanner;
@@ -13,7 +13,8 @@ public class Main
     {
         Scanner monInput = new Scanner(System.in);
         boolean menu = true;
-        HashMap<String, Integer> valeursMenu = MenuPrincipal.getValeursMenu();
+        HashMap<String, Integer> valeursMenuP = Menus.getValeursMenuP();
+        HashMap<String, Integer> valeursMenuM = Menus.getValeursMenuM();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println();
@@ -23,58 +24,58 @@ public class Main
 
         while (menu)
         {
-            MenuPrincipal.afficherMenu();
+            boolean menuModification = true;
+            Menus.afficherMenuPrincipal();
 
             Affichage.afficherLn("\n");
             Affichage.afficherSansLn("Entrez votre choix : ");
             String strChoix = monInput.nextLine();
+            Terminal.effacerTerminal();
             
-            int choix = VerifChoix.recupEtVerifChoix(strChoix);
+            int choix = VerifChoix.verifChoix(strChoix);
 
-            if (choix == -1)
+            if (VerifChoix.verifChoix(strChoix, valeursMenuP) == -1 || VerifChoix.verifChoix(strChoix, valeursMenuP) == -2)
             {
                 Terminal.effacerTerminal();
-                Affichage.afficherAvecPointsSecondes("Veuillez entrer un nombre entier non négatif valide");
+                Affichage.afficherAvecPointsSecondes("Veuillez entrer un nombre entier non négatif valide et/ou qui se trouve dans la liste des choix");
             }
 
             else
             {
-                int sortie = valeursMenu.get("Sortie");
-                int afficher = valeursMenu.get("Afficher");
-                int modifier = valeursMenu.get("Modifier");
+                int sortie = valeursMenuP.get("Sortie");
+                int afficher = valeursMenuP.get("Afficher");
+                int modifier = valeursMenuP.get("Modifier");
 
-                if (VerifChoix.choixDansValeursMenu(valeursMenu, choix) == 1)
+                if (choix == sortie)
                 {
-                    if (choix == sortie)
+                    monInput.close();
+                    return;
+                    
+                }
+
+                else if (choix == afficher)
+                {
+
+                }
+
+                else if (choix == modifier)
+                {
+                    while (menuModification)
                     {
-                        monInput.close();
-                        return;
-                        
-                    }
+                        Menus.afficherMenuModification();
+                        Affichage.afficherSansLn("Entrez votre choix : ");
+                        strChoix = monInput.nextLine();
+                        Affichage.afficherAvecPointsSecondes(strChoix);
 
-                    else if (choix == afficher)
-                    {
-
-                    }
-
-                    else if (choix == modifier)
-                    {
-
-                    }
-
-                    else
-                    {
-                        Terminal.effacerTerminal();
-                        Affichage.afficherAvecPointsSecondes("Le choix que vous avez entré n'est actuellement pas disponible.");
+                        choix = VerifChoix.verifChoix(strChoix);
                     }
                 }
 
                 else
                 {
-                    Terminal.effacerTerminal();
-                    Affichage.afficherAvecPointsSecondes("Veuillez entrer un nombre présent dans le menu");
+                    Affichage.afficherAvecPointsSecondes("Le choix que vous avez entré n'est actuellement pas disponible.");
                 }
-                
+            
             }
         }
         monInput.close();
