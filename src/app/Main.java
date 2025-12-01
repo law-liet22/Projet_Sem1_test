@@ -1,22 +1,12 @@
 package app;
 import models.MenuPrincipal;
-import services.VerifChoix;
+import services.*;
 import java.util.Scanner;
 import java.lang.Thread;
 import java.util.HashMap;
 
 public class Main 
 {
-
-    public static void afficherLn(String str)
-    {
-        System.out.println(str);
-    }
-
-    public static void afficherSansLn(String str)
-    {
-        System.out.print(str);
-    }
 
     public static void attendre(int s)
     {
@@ -40,34 +30,55 @@ public class Main
         {
             MenuPrincipal.afficherMenu();
 
-            afficherLn("\n");
-            afficherSansLn("Entrez votre choix : ");
+            Affichage.afficherLn("\n");
+            Affichage.afficherSansLn("Entrez votre choix : ");
             String strChoix = monInput.nextLine();
             
             int choix = VerifChoix.recupEtVerifChoix(strChoix);
 
             if (choix == -1)
             {
-                afficherLn("Veuillez entrer un nombre valide.");
+                Affichage.afficherLn("Veuillez entrer un nombre valide.");
             }
 
             else
             {
-                
+                int sortie = valeursMenu.get("Sortie");
+                int afficher = valeursMenu.get("Afficher");
+                int modifier = valeursMenu.get("Modifier");
+
                 if (VerifChoix.choixDansValeursMenu(valeursMenu, choix) == 1)
                 {
-                    afficherLn("Choix est dans le menu.");
-                    attendre(3);
+                    if (choix == sortie)
+                    {
+                        
+                    }
+
+                    if (choix == afficher)
+                    {
+
+                    }
+
+                    if (choix == modifier)
+                    {
+
+                    }
+
+                    else
+                    {
+                        Affichage.afficherLn("Le choix que vous avez entré n'est actuellement pas disponible.");
+                    }
+                    
                 }
+
                 else
                 {
-                    afficherLn("Veuillez entrer un nombre présent dans le menu.");
+                    Affichage.afficherLn("Veuillez entrer un nombre présent dans le menu.");
                     attendre(3);
                 }
                 
             }
         }
-
         monInput.close();
     }
 }
