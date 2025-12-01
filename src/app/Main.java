@@ -1,6 +1,9 @@
 package app;
-import models.MenuPrincipal;
-import services.*;
+// import models.Affichage;
+// import models.MenuPrincipal;
+// import models.Terminal;
+// import models.VerifChoix;
+import models.*;
 import java.util.Scanner;
 
 import java.util.HashMap;
@@ -65,7 +68,6 @@ public class Main
                         Terminal.effacerTerminal();
                         Affichage.afficherAvecPointsSecondes("Le choix que vous avez entré n'est actuellement pas disponible.");
                     }
-                    
                 }
 
                 else

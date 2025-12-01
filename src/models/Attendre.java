@@ -1,4 +1,4 @@
-package services;
+package models;
 import java.lang.Thread;
 
 public class Attendre {

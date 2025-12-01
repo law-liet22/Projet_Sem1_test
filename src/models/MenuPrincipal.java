@@ -1,6 +1,5 @@
 package models;
 import java.util.HashMap;
-import services.Terminal;
 
 public class MenuPrincipal {
     static HashMap<String, Integer> valeursMenu = new HashMap<>();
