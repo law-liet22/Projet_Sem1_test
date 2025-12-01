@@ -43,12 +43,12 @@ public class Main
                         
                     }
 
-                    if (choix == afficher)
+                    else if (choix == afficher)
                     {
 
                     }
 
-                    if (choix == modifier)
+                    else if (choix == modifier)
                     {
 
                     }
