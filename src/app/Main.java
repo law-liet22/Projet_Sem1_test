@@ -2,6 +2,7 @@ package app;
 import models.MenuPrincipal;
 import services.*;
 import java.util.Scanner;
+
 import java.util.HashMap;
 
 public class Main 
@@ -11,6 +12,12 @@ public class Main
         Scanner monInput = new Scanner(System.in);
         boolean menu = true;
         HashMap<String, Integer> valeursMenu = MenuPrincipal.getValeursMenu();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println();
+            System.out.println("Appuyez sur Enter pour fermer le programme si celui-ci semble bloqué.");
+            monInput.close();
+        }));
 
         while (menu)
         {
