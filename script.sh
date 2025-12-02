@@ -1,19 +1,19 @@
 # Création des dossiers
-mkdir -p out/C
-mkdir -p out/app
-mkdir -p out/models
+mkdir -p src/out/C
+mkdir -p src/out/app
+mkdir -p src/out/models
 
 # Compilation C
-gcc -c src/c/gestionInventaire.c -o out/C/gestionInventaire
+gcc -c src/c/gestionInventaire.c -o src/c/gestionInventaire
 
 # Compilation Java
-javac -d out src/app/Main.java src/models/*.java
+javac -d src/out src/app/Main.java src/models/*.java
 
 # Pause
 sleep 1
 
 # Exécution Java
-java -cp out app.Main
+java -cp src/out app.Main
 
 # Demande de confirmation
 read -p "Supprimer les fichiers compilés ? (O/N) : " confirm
@@ -23,7 +23,7 @@ confirm=${confirm,,}   # transforme en minuscule
 
 if [[ "$confirm" == "o" || "$confirm" == "oui" ]]; then
     echo "Suppression des fichiers compilés..."
-    rm -r out
+    rm -r src/out
 else
     echo "Fichiers conservés."
 fi
