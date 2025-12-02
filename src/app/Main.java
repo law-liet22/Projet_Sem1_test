@@ -1,5 +1,6 @@
 package app;
 import models.Affichage;
+import models.Attendre;
 import models.Menus;
 import models.Terminal;
 import models.VerifChoix;
@@ -16,11 +17,11 @@ public class Main
         boolean menu = true;
         HashMap<String, Integer> valeursMenuP = Menus.getValeursMenuP();
         HashMap<String, Integer> valeursMenuM = Menus.getValeursMenuM();
+        String dataPath = "out/C/output.txt";
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println();
             System.out.println("Appuyez sur Enter pour fermer le programme si celui-ci semble bloqué.");
-            monInput.close();
         }));
 
         while (menu)
@@ -49,14 +50,17 @@ public class Main
 
                 if (choix == sortie)
                 {
-                    monInput.close();
                     return;
                     
                 }
 
                 else if (choix == afficher)
                 {
-
+                    Terminal.effacerTerminal();
+                    InterractionCSV.executerC("afficher");
+                    InterractionCSV.afficherInventaire(dataPath);
+                    Affichage.afficherSansLn("\nAppuyez sur entrer pour continuer...");
+                    monInput.nextLine();
                 }
 
                 else if (choix == modifier)
@@ -85,7 +89,8 @@ public class Main
 
                             if (choix == ajouter)
                             {
-
+                                InterractionCSV.demanderEtAjouterProduit();
+                                Attendre.attendreInt(5);
                             }
 
                             else if (choix == modif)
@@ -113,6 +118,5 @@ public class Main
             
             }
         }
-        monInput.close();
     }
 }

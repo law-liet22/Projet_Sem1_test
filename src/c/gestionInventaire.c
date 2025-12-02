@@ -1,226 +1,216 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
+#include "gestionInventaire.h"
 
-#define MAX_LIGNE 512
-#define MAX_PRODUITS 10000
+// Lit tout le CSV en mémoire
+int chargerCSV(const char *chemin, Item *tab, int max)
+{
+    FILE *f = fopen(chemin, "r");
+    if (!f) return -1;
 
-typedef struct {
-    int id;
-    char nom[128];
-    char reference[128];
-    char categorie[128];
-    int quantite;
-    float prixUnitaire;
-    int seuilReappro;
-} Produit;
+    char buffer[512];
+    int i = 0;
 
-// Lecture CSV
-int chargerCSV(const char *fichier, Produit *tab) {
-    FILE *fp = fopen(fichier, "r");
-    if (!fp) {
-        fprintf(stderr, "Erreur : impossible d'ouvrir %s\n", fichier);
-        return -1;
-    }
-    char ligne[MAX_LIGNE];
-    int index = 0;
+    fgets(buffer, 512, f);
 
-    if (!fgets(ligne, MAX_LIGNE, fp)) {
-        fclose(fp);
-        return 0;
-    }
-    // on ignore header
-
-    while (fgets(ligne, MAX_LIGNE, fp)) {
-        // retirer \n
-        ligne[strcspn(ligne, "\r\n")] = '\0';
-        Produit p;
-        char *token;
-
-        token = strtok(ligne, ",");
-        if (!token) continue;
-        p.id = atoi(token);
-
-        token = strtok(NULL, ","); if (!token) continue;
-        strcpy(p.nom, token);
-
-        token = strtok(NULL, ","); if (!token) continue;
-        strcpy(p.reference, token);
-
-        token = strtok(NULL, ","); if (!token) continue;
-        strcpy(p.categorie, token);
-
-        token = strtok(NULL, ","); if (!token) continue;
-        p.quantite = atoi(token);
-
-        token = strtok(NULL, ","); if (!token) continue;
-        p.prixUnitaire = atof(token);
-
-        token = strtok(NULL, ","); if (!token) continue;
-        p.seuilReappro = atoi(token);
-
-        tab[index++] = p;
-        if (index >= MAX_PRODUITS) break;
+    while (fgets(buffer, 512, f) && i < max) {
+        sscanf(buffer, "%d,%[^,],%[^,],%[^,],%d,%f,%d",
+               &tab[i].id,
+               tab[i].nom,
+               tab[i].reference,
+               tab[i].categorie,
+               &tab[i].quantite,
+               &tab[i].prixUnitaire,
+               &tab[i].seuilReappro);
+        i++;
     }
 
-    fclose(fp);
-    return index;
+    fclose(f);
+    return i;
 }
 
-// Comparateurs pour qsort
-int cmp_id(const void *a, const void *b) {
-    return ((Produit *)a)->id - ((Produit *)b)->id;
-}
-int cmp_nom(const void *a, const void *b) {
-    return strcmp(((Produit *)a)->nom, ((Produit *)b)->nom);
-}
-int cmp_reference(const void *a, const void *b) {
-    return strcmp(((Produit *)a)->reference, ((Produit *)b)->reference);
-}
-int cmp_categorie(const void *a, const void *b) {
-    return strcmp(((Produit *)a)->categorie, ((Produit *)b)->categorie);
-}
-int cmp_quantite(const void *a, const void *b) {
-    return ((Produit *)a)->quantite - ((Produit *)b)->quantite;
-}
-int cmp_prix(const void *a, const void *b) {
-    float diff = ((Produit *)a)->prixUnitaire - ((Produit *)b)->prixUnitaire;
-    if (diff < 0) return -1;
-    if (diff > 0) return 1;
-    return 0;
-}
-int cmp_seuil(const void *a, const void *b) {
-    return ((Produit *)a)->seuilReappro - ((Produit *)b)->seuilReappro;
-}
+// Sauvegarde données triées dans TXT
+// void sauvegarderTXT(const char *chemin, Item *tab, int n)
+// {
+//     FILE *f = fopen(chemin, "w");
+//     if (!f) return;
 
-// Tri
-void trier(Produit *tab, int taille, int critere) {
-    switch (critere) {
-        case 1: qsort(tab, taille, sizeof(Produit), cmp_id); break;
-        case 2: qsort(tab, taille, sizeof(Produit), cmp_nom); break;
-        case 3: qsort(tab, taille, sizeof(Produit), cmp_reference); break;
-        case 4: qsort(tab, taille, sizeof(Produit), cmp_categorie); break;
-        case 5: qsort(tab, taille, sizeof(Produit), cmp_quantite); break;
-        case 6: qsort(tab, taille, sizeof(Produit), cmp_prix); break;
-        case 7: qsort(tab, taille, sizeof(Produit), cmp_seuil); break;
-        default: break;
-    }
-}
+//     for (int i = 0; i < n; i++) {
+//         fprintf(f,
+//             "%d | %s | %s | %s | %d | %.2f | %d\n",
+//             tab[i].id,
+//             tab[i].nom,
+//             tab[i].reference,
+//             tab[i].categorie,
+//             tab[i].quantite,
+//             tab[i].prixUnitaire,
+//             tab[i].seuilReappro
+//         );
+//     }
 
-// Ajout
-int ajouter(Produit *tab, int taille,
-            const char *nom,
-            const char *ref,
-            const char *categorie,
-            int quantite,
-            float prix,
-            int seuil) {
-    int maxId = 0;
-    for (int i = 0; i < taille; i++) {
-        if (tab[i].id > maxId) maxId = tab[i].id;
-    }
-    Produit p;
-    p.id = maxId + 1;
-    strncpy(p.nom, nom, 127);
-    p.nom[127] = '\0';
-    strncpy(p.reference, ref, 127);
-    p.reference[127] = '\0';
-    strncpy(p.categorie, categorie, 127);
-    p.categorie[127] = '\0';
-    p.quantite = quantite;
-    p.prixUnitaire = prix;
-    p.seuilReappro = seuil;
-    tab[taille] = p;
-    return taille + 1;
-}
+//     fclose(f);
+// }
 
-// Suppression (id ou reference)
-int supprimer(Produit *tab, int taille, const char *crit) {
-    int estID = 1;
-    for (int i = 0; crit[i] != '\0'; i++) {
-        if (!isdigit((unsigned char)crit[i])) {
-            estID = 0; break;
-        }
-    }
-    for (int i = 0; i < taille; i++) {
-        if ((estID && tab[i].id == atoi(crit)) ||
-            (!estID && strcmp(tab[i].reference, crit) == 0)) {
-            for (int j = i; j < taille - 1; j++) {
-                tab[j] = tab[j + 1];
-            }
-            return taille - 1;
-        }
-    }
-    return taille;
-}
+// Sauvegarde données dans TXT avec entêtes et mise en forme agréable
+void sauvegarderTXT(const char *chemin, Item *tab, int n)
+{
+    FILE *f = fopen(chemin, "w");
+    if (!f) return;
 
-// Sauvegarde TXT
-int sauverTXT(const char *fichier, Produit *tab, int taille) {
-    FILE *fp = fopen(fichier, "w");
-    if (!fp) {
-        fprintf(stderr, "Erreur écriture %s\n", fichier);
-        return 0;
-    }
-    for (int i = 0; i < taille; i++) {
-        fprintf(fp,
-            "%d,%s,%s,%s,%d,%.2f,%d\n",
-            tab[i].id,
-            tab[i].nom,
-            tab[i].reference,
-            tab[i].categorie,
-            tab[i].quantite,
-            tab[i].prixUnitaire,
-            tab[i].seuilReappro
+    // Écriture des en-têtes
+    fprintf(f, "%-5s | %-20s | %-12s | %-15s | %-8s | %-12s | %-8s\n",
+            "ID", "Nom", "Référence", "Catégorie", "Quantité", "PrixUnitaire", "Seuil");
+    fprintf(f, "-------------------------------------------------------------------------------\n");
+
+    // Écriture des données
+    for (int i = 0; i < n; i++) {
+        fprintf(f, "%-5d | %-20s | %-12s | %-15s | %-8d | %-12.2f | %-8d\n",
+                tab[i].id,
+                tab[i].nom,
+                tab[i].reference,
+                tab[i].categorie,
+                tab[i].quantite,
+                tab[i].prixUnitaire,
+                tab[i].seuilReappro
         );
     }
-    fclose(fp);
-    return 1;
+
+    fclose(f);
 }
 
-// MAIN
-int main(int argc, char *argv[]) {
-    if (argc < 4) {
-        fprintf(stderr, "Usage: %s <input.csv> <output.txt> <op> [args]\n", argv[0]);
-        return 1;
-    }
-    const char *in = argv[1];
-    const char *out = argv[2];
-    int op = atoi(argv[3]);
 
-    Produit tab[MAX_PRODUITS];
-    int n = chargerCSV(in, tab);
-    if (n < 0) return 1;
+// Comparateurs
+int cmp(const void *a, const void *b, const char *critere)
+{
+    const Item *x = a;
+    const Item *y = b;
 
-    if (op == 0) {
-        // tri : 4ᵉ argument = critère 1..7
-        int crit = atoi(argv[4]);
-        trier(tab, n, crit);
-    }
-    else if (op == 1) {
-        // ajout : args : nom, ref, categorie, quantite, prix, seuil
-        if (argc != 10) {
-            fprintf(stderr, "Args manquants pour ajout\n");
-            return 1;
-        }
-        n = ajouter(tab, n,
-                    argv[4], argv[5], argv[6],
-                    atoi(argv[7]), atof(argv[8]), atoi(argv[9]));
-    }
-    else if (op == 2) {
-        // suppression : arg 4 = id ou reference
-        if (argc != 5) {
-            fprintf(stderr, "Args manquants pour suppression\n");
-            return 1;
-        }
-        n = supprimer(tab, n, argv[4]);
-    }
-    else {
-        fprintf(stderr, "Opération inconnue\n");
-        return 1;
-    }
+    if (strcmp(critere, "id") == 0)
+        return x->id - y->id;
+    if (strcmp(critere, "nom") == 0)
+        return strcmp(x->nom, y->nom);
+    if (strcmp(critere, "reference") == 0)
+        return strcmp(x->reference, y->reference);
+    if (strcmp(critere, "categorie") == 0)
+        return strcmp(x->categorie, y->categorie);
+    if (strcmp(critere, "quantite") == 0)
+        return x->quantite - y->quantite;
+    if (strcmp(critere, "prixUnitaire") == 0)
+        return (x->prixUnitaire > y->prixUnitaire) - (x->prixUnitaire < y->prixUnitaire);
+    if (strcmp(critere, "seuilReappro") == 0)
+        return x->seuilReappro - y->seuilReappro;
 
-    if (!sauverTXT(out, tab, n)) return 1;
+    return 0;
+}
+
+char critere_global[64];
+
+int wrapper_cmp(const void *a, const void *b)
+{
+    return cmp(a, b, critere_global);
+}
+
+void trier(Item *tab, int n, const char *critere)
+{
+    strcpy(critere_global, critere);
+    qsort(tab, n, sizeof(Item), wrapper_cmp);
+}
+
+// Ajout (ID auto-incrémenté)
+// int ajouter(Item *tab, int n, const char *ligneCSV)
+// {
+//     int maxId = 0;
+//     for (int i = 0; i < n; i++)
+//         if (tab[i].id > maxId) maxId = tab[i].id;
+
+//     tab[n].id = maxId + 1;
+
+//     sscanf(ligneCSV, "%[^,],%[^,],%[^,],%d,%f,%d",
+//            tab[n].nom,
+//            tab[n].reference,
+//            tab[n].categorie,
+//            &tab[n].quantite,
+//            &tab[n].prixUnitaire,
+//            &tab[n].seuilReappro);
+
+//     return n + 1;
+// }
+
+int ajouter(Item *tab, int n, const char *ligneCSV)
+{
+    int maxId = 0;
+    for (int i = 0; i < n; i++)
+        if (tab[i].id > maxId) maxId = tab[i].id;
+
+    tab[n].id = maxId + 1;
+
+    char copie[256];
+    strcpy(copie, ligneCSV);
+
+    char *token = strtok(copie, ",");
+    strcpy(tab[n].nom, token);
+
+    token = strtok(NULL, ",");
+    strcpy(tab[n].reference, token);
+
+    token = strtok(NULL, ",");
+    strcpy(tab[n].categorie, token);
+
+    token = strtok(NULL, ",");
+    tab[n].quantite = atoi(token);
+
+    token = strtok(NULL, ",");
+    tab[n].prixUnitaire = atof(token);
+
+    token = strtok(NULL, ",");
+    tab[n].seuilReappro = atoi(token);
+
+    return n + 1;
+}
+
+
+// Suppression d'une ligne par ID ou référence
+int supprimer(Item *tab, int n, int id, const char *reference)
+{
+    int j = 0;
+    for (int i = 0; i < n; i++) {
+        if ((id != -1 && tab[i].id == id) ||
+            (reference != NULL && strcmp(tab[i].reference, reference) == 0))
+            continue;
+        tab[j++] = tab[i];
+    }
+    return j;
+}
+
+// Programme principal (appelé depuis Java)
+int main(int argc, char **argv)
+{
+    printf("Ligne reçue pour ajout : '%s'\n", argv[2]);
+
+    Item tab[MAX_LIGNES];
+    int n = chargerCSV("src/data/inventaire.csv", tab, MAX_LIGNES);
+    if (n <= 0) return 1;
+
+    if (strcmp(argv[1], "afficher") == 0) {
+        sauvegarderTXT("out/C/output.txt", tab, n);
+    }
+    else if (strcmp(argv[1], "trier") == 0) {
+        trier(tab, n, argv[2]);
+        sauvegarderTXT("out/C/output.txt", tab, n);
+    }
+    else if (strcmp(argv[1], "ajouter") == 0) {
+        char ligne[256];
+        strcpy(ligne, argv[2]);
+        n = ajouter(tab, n, ligne);
+        sauvegarderTXT("out/C/output.txt", tab, n);
+    }
+    else if (strcmp(argv[1], "supprimer") == 0) {
+        int id = atoi(argv[2]);
+        const char *ref = (strcmp(argv[2], "-1") == 0 ? argv[3] : NULL);
+        n = supprimer(tab, n, id, ref);
+        sauvegarderTXT("out/C/output.txt", tab, n);
+    }
 
     return 0;
 }
