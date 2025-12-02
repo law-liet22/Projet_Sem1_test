@@ -1,18 +1,29 @@
-mkdir out 
-mkdir out/C
-mkdir out/app
-mkdir out/models
+# Création des dossiers
+mkdir -p out/C
+mkdir -p out/app
+mkdir -p out/models
 
-gcc -o out/C/triDonnees -c src/services/triDonnees.c
+# Compilation C
+gcc -c src/services/triDonnees.c -o out/C/triDonnees
 
+# Compilation Java
 javac -d out src/app/Main.java src/models/*.java
 
-sleep 3s
+# Pause
+sleep 1
 
+# Exécution Java
 java -cp out app.Main
 
-read -p "Supprimer les fichiers compilés ? (O/N) : " confirm && [[&confirm = [oO] || confirm = [oO][uU][iI]]] || exit 1
+# Demande de confirmation
+read -p "Supprimer les fichiers compilés ? (O/N) : " confirm
 
-if [ $confirm -eq ]
+# Normalisation de la réponse
+confirm=${confirm,,}   # transforme en minuscule
 
-rm -r out
+if [[ "$confirm" == "o" || "$confirm" == "oui" ]]; then
+    echo "Suppression des fichiers compilés..."
+    rm -r out
+else
+    echo "Fichiers conservés."
+fi
