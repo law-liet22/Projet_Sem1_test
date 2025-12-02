@@ -1,4 +1,0 @@
-1. Fonction afficher menu
-2. Récup entrées
-    Vérifier si entrées correctes
-3. 
