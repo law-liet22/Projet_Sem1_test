@@ -4,7 +4,7 @@ mkdir -p out/app
 mkdir -p out/models
 
 # Compilation C
-gcc -c src/services/triDonnees.c -o out/C/triDonnees
+gcc -c src/c/gestionInventaire.c -o out/C/gestionInventaire
 
 # Compilation Java
 javac -d out src/app/Main.java src/models/*.java

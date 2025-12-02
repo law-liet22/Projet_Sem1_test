@@ -46,6 +46,7 @@ public class Menus {
         valeursMenuM.put("Ajouter", valModifAjouter);
         valeursMenuM.put("Modifier", valModifModifier);
         valeursMenuM.put("Supprimer", valModifSupprimer);
+        valeursMenuM.put("Retour", valSortie);
 
         return valeursMenuM;
     }
@@ -61,6 +62,6 @@ public class Menus {
                 "\n" + valModifAjouter+ ". " + modifAjouter + 
                 "\n" + valModifModifier + ". " + modifModifier + 
                 "\n" + valModifSupprimer + ". " + modifSupprimer +
-                "\n" + valSortie + ". Arrêt du programme\n------------------------------");
+                "\n" + valSortie + ". Retour au menu principal\n------------------------------");
     }
 }

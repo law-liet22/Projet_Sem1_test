@@ -1,0 +1,25 @@
+id,nom,référence,catégorie,quantité,prixUnitaire,seuilRéapprovisionnement
+1,Clé USB 32Go,USB-32-A1,Informatique,120,8.90,20
+2,Câble Ethernet Cat6,ETH-C6-B2,Informatique,75,4.50,15
+3,Souris Optique,SRS-OP-C3,Informatique,40,12.99,10
+4,Clavier Mécanique,CLV-MC-D4,Informatique,25,59.90,5
+5,Écran 24 pouces,ECR-24-E1,Informatique,12,129.00,2
+
+6,Chaise de bureau,CHR-BU-F3,Mobilier,30,79.00,5
+7,Bureau réglable,BUR-RG-G2,Mobilier,10,199.00,2
+8,Armoire métallique,ARM-MT-H4,Mobilier,8,149.90,2
+
+9,Stylo bille noir,STY-NR-J1,Fournitures,500,0.35,100
+10,Cahier A4 96p,CAH-A4-K2,Fournitures,200,1.20,50
+11,Boîte de trombones,TRM-BX-L3,Fournitures,150,0.90,30
+12,Surligneur jaune,SRL-JN-M4,Fournitures,180,0.75,40
+
+13,Gants nitrile taille M,GNT-M-N2,Médical,300,0.12,50
+14,Masque FFP2,MSK-F2-O1,Médical,250,0.80,50
+15,Seringue 5mL,SRG-5-P4,Médical,400,0.25,80
+16,Compresses stériles,CMP-ST-Q3,Médical,350,0.15,70
+
+17,Disque SSD 1To,SSD-1T-R7,Informatique,18,89.00,5
+18,Multiprise 6 ports,MTP-6-S1,Électricité,60,12.50,10
+19,Batterie externe 20 000mAh,BAT-20K-T2,Électronique,35,24.90,7
+20,Hub USB-C 5 ports,HUB-C5-U9,Informatique,22,17.90,5

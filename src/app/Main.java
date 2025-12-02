@@ -3,6 +3,7 @@ import models.Affichage;
 import models.Menus;
 import models.Terminal;
 import models.VerifChoix;
+import models.InterractionCSV;
 import java.util.Scanner;
 
 import java.util.HashMap;
@@ -63,11 +64,45 @@ public class Main
                     while (menuModification)
                     {
                         Menus.afficherMenuModification();
+                        Affichage.afficherLn("\n");
                         Affichage.afficherSansLn("Entrez votre choix : ");
                         strChoix = monInput.nextLine();
-                        Affichage.afficherAvecPointsSecondes(strChoix);
 
                         choix = VerifChoix.verifChoix(strChoix);
+
+                        if (VerifChoix.verifChoix(strChoix, valeursMenuM) == -1 || VerifChoix.verifChoix(strChoix, valeursMenuM) == -2)
+                        {
+                            Terminal.effacerTerminal();
+                            Affichage.afficherAvecPointsSecondes("Veuillez entrer un nombre entier non négatif valide et/ou qui se trouve dans la liste des choix");
+                        }
+
+                        else
+                        {
+                            int ajouter = valeursMenuM.get("Ajouter");
+                            int modif = valeursMenuM.get("Modifier");
+                            int supprimer = valeursMenuM.get("Supprimer");
+                            int retour = valeursMenuM.get("Retour");
+
+                            if (choix == ajouter)
+                            {
+
+                            }
+
+                            else if (choix == modif)
+                            {
+
+                            }
+
+                            else if (choix == supprimer)
+                            {
+
+                            }
+
+                            else if (choix == retour)
+                            {
+                                menuModification = false;
+                            }
+                        }
                     }
                 }
 
