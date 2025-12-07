@@ -5,6 +5,7 @@ import models.Menus;
 import models.Terminal;
 import models.VerifChoix;
 import services.InventaireService;
+import services.TrieService;
 import utils.DataPath;
 import models.Produit;
 import java.util.Scanner;
@@ -87,53 +88,81 @@ public class Main
 
                         else
                         {
-                            int ajouter = valeursMenuM.get("Ajouter");
-                            int modif = valeursMenuM.get("Modifier");
-                            int supprimer = valeursMenuM.get("Supprimer");
-                            int retour = valeursMenuM.get("Retour");
-
-                            if (choix == ajouter)
+                            try
                             {
-                                Affichage.afficherAvecPointsSecondes(service.ajouterProduit());
-                                Attendre.attendreInt(1);
-                            }
+                                int ajouter = valeursMenuM.get("Ajouter");
+                                int modif = valeursMenuM.get("Modifier");
+                                int supprimer = valeursMenuM.get("Supprimer");
+                                int retour = valeursMenuM.get("Retour");
 
-                            else if (choix == modif)
-                            {
-                                Affichage.afficherAvecPointsSecondes(service.modifierProduit());
-
-                                
-                            }
-
-                            else if (choix == supprimer)
-                            {
-                                Affichage.afficherSansLn("ID à supprimer : ");
-                                String idS = monInput.nextLine();
-                                int idSupp = Integer.parseInt(idS.trim());
-
-                                boolean monBool = service.supprimerProduit(idSupp);
-
-                                if (!monBool)
+                                if (choix == ajouter)
                                 {
-                                    Affichage.afficherAvecPointsSecondes("ID introuvable");
+                                    Affichage.afficherAvecPointsSecondes(service.ajouterProduit());
+                                    Attendre.attendreInt(1);
                                 }
-                                else
+
+                                else if (choix == modif)
                                 {
-                                    Affichage.afficherAvecPointsSecondes("Objet supprimé");
+                                    Affichage.afficherAvecPointsSecondes(service.modifierProduit());
+
+                                    
                                 }
+
+                                else if (choix == supprimer)
+                                {
+                                    Affichage.afficherSansLn("ID à supprimer : ");
+                                    String idS = monInput.nextLine();
+                                    int idSupp = Integer.parseInt(idS.trim());
+
+                                    boolean monBool = service.supprimerProduit(idSupp);
+
+                                    if (!monBool)
+                                    {
+                                        Affichage.afficherAvecPointsSecondes("ID introuvable");
+                                    }
+                                    else
+                                    {
+                                        Affichage.afficherAvecPointsSecondes("Objet supprimé");
+                                    }
+                                }
+
+                                else if (choix == retour)
+                                {
+                                    menuModification = false;
+                                }
+                            }
+                            catch (NumberFormatException e)
+                            {
+                                Affichage.afficherAvecPointsSecondes("Veuillez entrer un entier");
                             }
 
-                            else if (choix == retour)
-                            {
-                                menuModification = false;
-                            }
                         }
                     }
                 }
 
                 else if (choix == trier)
                 {
-                    Affichage.afficherAvecPointsSecondes(service.lancerTri());
+                    int tri = service.lancerTri();
+                    if (tri == 1)
+                    {
+                        Affichage.afficherAvecPointsSecondes("Trié avec succès");
+                        TrieService.afficherFichierTrie("/home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/data/inventaire_trie.txt");
+                        Affichage.afficherSansLn("\nAppuyez sur entrer pour continuer...");
+                        monInput.nextLine();
+                    }
+                    else if (tri == -1)
+                    {
+                        Affichage.afficherAvecPointsSecondes("Erreur lors du triage");
+                    }
+                    else if (tri == -2)
+                    {
+                        Affichage.afficherAvecPointsSecondes("Veuillez entrer un critère valide");
+                    }
+                    else
+                    {
+                        Affichage.afficherAvecPointsSecondes("Erreur : " + Integer.toString(tri));
+                    }
+                    
                 }
 
                 else

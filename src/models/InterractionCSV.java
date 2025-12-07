@@ -12,7 +12,7 @@ public class InterractionCSV {
         this.cheminExecutable = cheminExecutable;
     }
 
-    public String executerTri(String cheminCSV, int critere)
+    public int executerTri(String cheminCSV, int critere)
     {
         try
         {
@@ -38,14 +38,17 @@ public class InterractionCSV {
 
             if (exitCode != 0)
             {
-                return "Erreur lors du tri (code " + exitCode + ") : \n" + output;
+                // return "Erreur lors du tri (code " + exitCode + ") : \n" + output;
+                return exitCode;
             }
 
-            return "Trie effectué avec succès.\n" + output;
+            // return "Trie effectué avec succès" + output ;
+            return 1;
         }
         catch (IOException | InterruptedException e)
         {
-            return "Erreur : " + e.getMessage();
+            // return "Erreur : " + e.getMessage();
+            return -1;
         }
     }
 }

@@ -280,7 +280,7 @@ public class InventaireService {
         }
     }
 
-    public String lancerTri()
+    public int lancerTri()
     {
         Affichage.afficherLn("Choisir critère de tri : ");
         Affichage.afficherLn("1 = id");
@@ -296,7 +296,7 @@ public class InventaireService {
 
         if (critere < 1 || critere > 7)
         {
-            return "Critère invalide.";
+            return -2;
         }
 
         InterractionCSV inter = new InterractionCSV("/home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/C/trier");

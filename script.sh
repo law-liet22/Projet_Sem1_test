@@ -38,3 +38,5 @@ else
     seelp 1
     clear
 fi
+
+exit
