@@ -1,10 +1,13 @@
 package app;
+import java.util.List;
 import models.Affichage;
 import models.Attendre;
 import models.Menus;
 import models.Terminal;
 import models.VerifChoix;
-import models.InterractionCSV;
+import services.InventaireService;
+import models.LecteurCSV;
+import models.Produit;
 import java.util.Scanner;
 
 import java.util.HashMap;
@@ -17,7 +20,7 @@ public class Main
         boolean menu = true;
         HashMap<String, Integer> valeursMenuP = Menus.getValeursMenuP();
         HashMap<String, Integer> valeursMenuM = Menus.getValeursMenuM();
-        String dataPath = "out/C/output.txt";
+        String dataPath = "src/data/inventaire.csv";
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println();
@@ -26,6 +29,8 @@ public class Main
 
         while (menu)
         {
+            InventaireService service = new InventaireService(dataPath);
+            List<Produit> inventaire = LecteurCSV.lireCSV(dataPath);
             boolean menuModification = true;
             Menus.afficherMenuPrincipal();
 
@@ -57,8 +62,9 @@ public class Main
                 else if (choix == afficher)
                 {
                     Terminal.effacerTerminal();
-                    InterractionCSV.executerC("afficher");
-                    InterractionCSV.afficherInventaire(dataPath);
+                    // LecteurCSV.afficherInventaire(inventaire);
+                    for (Produit p : service.getInventaire())
+                        System.out.println(p);
                     Affichage.afficherSansLn("\nAppuyez sur entrer pour continuer...");
                     monInput.nextLine();
                 }
@@ -89,7 +95,6 @@ public class Main
 
                             if (choix == ajouter)
                             {
-                                InterractionCSV.demanderEtAjouterProduit();
                                 Attendre.attendreInt(5);
                             }
 
