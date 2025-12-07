@@ -94,7 +94,7 @@ public class Main
 
                             if (choix == ajouter)
                             {
-                                service.ajouterProduit();
+                                Affichage.afficherAvecPointsSecondes(service.ajouterProduit());
                                 Attendre.attendreInt(1);
                             }
 

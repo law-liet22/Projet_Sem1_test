@@ -1,25 +1,26 @@
 # Création des dossiers
-mkdir -p out/C
-mkdir -p out/app
-mkdir -p out/models
-mkdir -p out/data
+mkdir -p /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/C
+mkdir -p /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/app
+mkdir -p /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/models
+mkdir -p /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/data
 
-cp src/data/inventaire.csv out/data/inventaire.csv
+cp /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/src/data/inventaire.csv /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/data/inventaire.csv
 
 # Compilation C
-gcc src/c/trier.c -o out/C/trier
+gcc /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/src/c/trier.c -o /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/C/trier
 
 # Compilation Java
-javac -d out src/app/Main.java src/models/*.java src/services/*.java src/utils/*.java
+javac -d /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/src/app/Main.java /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/src/models/*.java /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/src/services/*.java /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/src/utils/*.java
 
-chmod +x out/C/trier
+# Ajout des droits d'exécution pour le fichier C complié 
+chmod +x /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/C/trier
 # Pause
-sleep 1
+# sleep 1
 
 # Exécution Java
-java -cp out app.Main
+java -cp /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out app.Main
 
-cp out/data/inventaire.csv src/data/inventaire.csv
+cp /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/data/inventaire.csv /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/src/data/inventaire.csv
 
 # Demande de confirmation
 read -p "Supprimer les fichiers compilés ? (O/N) : " confirm

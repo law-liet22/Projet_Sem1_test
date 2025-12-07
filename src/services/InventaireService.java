@@ -35,35 +35,98 @@ public class InventaireService {
     }
 
     // Ajout
-    public void ajouterProduit() {
+    public String ajouterProduit() {
         InventaireService service = new InventaireService(this.dataPath);
         Affichage.afficherSansLn("Nom : ");
         String nom = monInput .nextLine();
+        if (nom.isBlank() || nom == "\0" || nom == "\n")
+        {
+            return "Veuillez entrer un nom";
+        }
 
         Affichage.afficherSansLn("Référence : ");
         String ref = monInput.nextLine();
+        if (ref.isBlank() || ref == "\0" || ref == "\n")
+        {
+            return "Veuillez entrer une référence";
+        }
 
         Affichage.afficherSansLn("Catégorie : ");
         String cat = monInput.nextLine();
+        if (cat.isBlank() || cat == "\0" ||  cat == "\n")
+        {
+            return "Veuillez entrer une catégorie";
+        }
 
         Affichage.afficherSansLn("Quantité : ");
         String qteS = monInput.nextLine();
-        int qte = Integer.parseInt(qteS);
+        if (!qteS.isBlank() || qteS != "\n" || qteS != "\0")
+        {
+            try
+            {
+                int nQte = Integer.parseInt(qteS.trim());
 
-        Affichage.afficherSansLn("Prix : ");
-        String prixS = monInput.nextLine();
-        double prix = Double.parseDouble(prixS.trim());
+                if (nQte < 0) return "Quantité invalide (doit être supérieure à 0)";
 
-        Affichage.afficherSansLn("Seuil : ");
-        String seuilS = monInput.nextLine();
-        int seuil = Integer.parseInt(seuilS);
+                Affichage.afficherSansLn("Prix : ");
+                String prixS = monInput.nextLine();
+                if (!prixS.isBlank() || prixS != "\0" || prixS != "\n")
+                {
+                    try
+                    {
+                        double nPrix = Double.parseDouble(prixS.trim());
 
-        int id = service.getInventaire().size()+1;
+                        if (nPrix < 0.0) return "Prix invalide (doit être supérieur à 0.0)";
 
-        Produit p = new Produit(id, nom, ref, cat, qte, prix, seuil);
+                        Affichage.afficherSansLn("Seuil : ");
+                        String seuilS = monInput.nextLine();
+                        if (!seuilS.isBlank() || seuilS != "\0" || seuilS != "\n")
+                        {
+                            try
+                            {
+                                int nSeuil = Integer.parseInt(seuilS.trim());
 
-        inventaire.add(p);
-        sauvegarder();
+                                if (nSeuil < 0) return "Seuil invalide (doit être supérieure ou égal à 0";
+
+                                int id = service.getInventaire().size()+1;
+
+                                Produit p = new Produit(id, nom, ref, cat, nQte, nPrix, nSeuil);
+
+                                inventaire.add(p);
+                                sauvegarder();
+                            }
+
+                            catch (NumberFormatException e)
+                            {
+                                return "Seuil invalide (doit être un entier)";
+                            }
+                        }
+                        else
+                        {
+                            return "Veuillez entrer un seuil";
+                        }
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        return "Prix invalide (doit être un nombre)";
+                    }
+                }
+                else
+                {
+                    return "Veuillez entrer un prix";
+                }
+            }
+            catch (NumberFormatException e)
+            {
+                return "Quantité invalide (doit être un entier)";
+            }
+        }
+        else
+        {
+            return "Veuillez entrer une quantité";
+        }
+
+        return "Objet ajouté";
     }
 
     // Modification
@@ -179,51 +242,6 @@ public class InventaireService {
         finally
         {
         }
-
-        // InventaireService service = new InventaireService(this.dataPath);
-
-        // Affichage.afficherSansLn("ID du produit à modifier : ");
-        // String idModifS = monInput.nextLine();
-
-        // int idModif = Integer.parseInt(idModifS);
-        // Produit existant = service.trouverParId(idModif);
-        // if (existant == null)
-        // {
-        //     return "ID introuvable";
-        // }
-
-        // Affichage.afficherSansLn("Nom : ");
-        // String nNom = monInput .nextLine();
-
-        // Affichage.afficherSansLn("Référence : ");
-        // String nRef = monInput.nextLine();
-
-        // Affichage.afficherSansLn("Catégorie : ");
-        // String nCat = monInput.nextLine();
-
-        // Affichage.afficherSansLn("Quantité : ");
-        // String qteS = monInput.nextLine();
-        // int nQte = Integer.parseInt(qteS);
-
-        // Affichage.afficherSansLn("Prix : ");
-        // String prixS = monInput.nextLine();
-        // double nPrix = new Double(prixS).doubleValue();
-
-        // Affichage.afficherSansLn("Seuil : ");
-        // String seuilS = monInput.nextLine();
-        // int nSeuil = Integer.parseInt(seuilS);
-
-        // Produit p = new Produit(idModif, nNom, nRef, nCat, nQte, nPrix, nSeuil);
-
-        // p.setNom(nNom);
-        // p.setReference(nRef);
-        // p.setCategorie(nCat);
-        // p.setQuantite(nQte);
-        // p.setPrixUnitaire(nPrix);
-        // p.setSeuilReappro(nSeuil);
-
-        // sauvegarder();
-        // return "Produit modifié";
     }
 
     // Suppression
@@ -281,7 +299,7 @@ public class InventaireService {
             return "Critère invalide.";
         }
 
-        InterractionCSV inter = new InterractionCSV("out/C/trier");
+        InterractionCSV inter = new InterractionCSV("/home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/C/trier");
 
         return inter.executerTri(dataPath, critere);
     }
