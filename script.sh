@@ -2,14 +2,17 @@
 mkdir -p out/C
 mkdir -p out/app
 mkdir -p out/models
+mkdir -p out/data
+
+cp src/data/inventaire.csv out/data/inventaire.csv
 
 # Compilation C
-gcc src/c/gestionInventaire.c -o out/C/gestionInventaire
+gcc src/c/trier.c -o out/C/trier
 
 # Compilation Java
-javac -d out src/app/Main.java src/models/*.java
+javac -d out src/app/Main.java src/models/*.java src/services/*.java src/utils/*.java
 
-chmod +x out/C/gestionInventaire
+chmod +x out/C/trier
 # Pause
 sleep 1
 

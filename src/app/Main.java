@@ -10,7 +10,6 @@ import models.LecteurCSV;
 import utils.DataPath;
 import models.Produit;
 import java.util.Scanner;
-import java.security.Provider.Service;
 import java.util.HashMap;
 
 public class Main 
@@ -31,7 +30,6 @@ public class Main
         while (menu)
         {
             InventaireService service = new InventaireService(dataPath);
-            List<Produit> inventaire = LecteurCSV.lireCSV(dataPath);
             boolean menuModification = true;
             Menus.afficherMenuPrincipal();
 
@@ -136,7 +134,7 @@ public class Main
 
                 else if (choix == trier)
                 {
-                    
+                    Affichage.afficherAvecPointsSecondes(service.lancerTri());
                 }
 
                 else

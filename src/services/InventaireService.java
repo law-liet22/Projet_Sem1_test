@@ -2,6 +2,7 @@ package services;
 
 import models.Produit;
 import models.Affichage;
+import models.InterractionCSV;
 import models.LecteurCSV;
 import utils.CSVUtils;
 import java.io.PrintWriter;
@@ -51,7 +52,7 @@ public class InventaireService {
 
         Affichage.afficherSansLn("Prix : ");
         String prixS = monInput.nextLine();
-        double prix = new Double(prixS).doubleValue();
+        double prix = Double.parseDouble(prixS.trim());
 
         Affichage.afficherSansLn("Seuil : ");
         String seuilS = monInput.nextLine();
@@ -259,5 +260,29 @@ public class InventaireService {
         } catch (Exception e) {
             System.out.println("Erreur de sauvegarde : " + e);
         }
+    }
+
+    public String lancerTri()
+    {
+        Affichage.afficherLn("Choisir critère de tri : ");
+        Affichage.afficherLn("1 = id");
+        Affichage.afficherLn("2 = nom");
+        Affichage.afficherLn("3 = référence");
+        Affichage.afficherLn("4 = catégorie");
+        Affichage.afficherLn("5 = quantité");
+        Affichage.afficherLn("6 = prix unitaire");
+        Affichage.afficherLn("7 = seul réapprovisionnement");
+        Affichage.afficherSansLn("> ");
+
+        int critere = Integer.parseInt(monInput.nextLine());
+
+        if (critere < 1 || critere > 7)
+        {
+            return "Critère invalide.";
+        }
+
+        InterractionCSV inter = new InterractionCSV("out/C/trier");
+
+        return inter.executerTri(dataPath, critere);
     }
 }
