@@ -19,6 +19,8 @@ sleep 1
 # Exécution Java
 java -cp out app.Main
 
+cp out/data/inventaire.csv src/data/inventaire.csv
+
 # Demande de confirmation
 read -p "Supprimer les fichiers compilés ? (O/N) : " confirm
 

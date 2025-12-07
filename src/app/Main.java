@@ -1,12 +1,10 @@
 package app;
-import java.util.List;
 import models.Affichage;
 import models.Attendre;
 import models.Menus;
 import models.Terminal;
 import models.VerifChoix;
 import services.InventaireService;
-import models.LecteurCSV;
 import utils.DataPath;
 import models.Produit;
 import java.util.Scanner;
@@ -144,5 +142,7 @@ public class Main
             
             }
         }
+
+        monInput.close();
     }
 }

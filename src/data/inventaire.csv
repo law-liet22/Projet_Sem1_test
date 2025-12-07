@@ -18,6 +18,3 @@ id,nom,référence,catégorie,quantité,prixUnitaire,seuilRéapprovisionnement
 17,Disque SSD 1To,SSD-1T-R7,Informatique,18,89.0,5
 18,Multiprise 6 ports,MTP-6-S1,Électricité,60,12.5,10
 19,Batterie externe 20 000mAh,BAT-20K-T2,Électronique,35,24.9,7
-20,Hub USB-C 5 ports,HUB-C5-U9,Informatique,22,17.9,5
-21,Obj1,REF1,Random,6,12.3,2
-22,Nom1,Ref1,Cat1,5,67.28,2
