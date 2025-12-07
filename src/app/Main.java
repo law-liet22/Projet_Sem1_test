@@ -53,6 +53,7 @@ public class Main
 
                 if (choix == sortie)
                 {
+                    monInput.close();
                     return;
                     
                 }
