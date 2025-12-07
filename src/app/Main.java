@@ -7,9 +7,10 @@ import models.Terminal;
 import models.VerifChoix;
 import services.InventaireService;
 import models.LecteurCSV;
+import utils.DataPath;
 import models.Produit;
 import java.util.Scanner;
-
+import java.security.Provider.Service;
 import java.util.HashMap;
 
 public class Main 
@@ -20,7 +21,7 @@ public class Main
         boolean menu = true;
         HashMap<String, Integer> valeursMenuP = Menus.getValeursMenuP();
         HashMap<String, Integer> valeursMenuM = Menus.getValeursMenuM();
-        String dataPath = "src/data/inventaire.csv";
+        String dataPath = DataPath.getDataPath();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println();
@@ -52,6 +53,7 @@ public class Main
                 int sortie = valeursMenuP.get("Sortie");
                 int afficher = valeursMenuP.get("Afficher");
                 int modifier = valeursMenuP.get("Modifier");
+                int trier = valeursMenuP.get("Trier");
 
                 if (choix == sortie)
                 {
@@ -95,17 +97,33 @@ public class Main
 
                             if (choix == ajouter)
                             {
-                                Attendre.attendreInt(5);
+                                service.ajouterProduit();
+                                Attendre.attendreInt(1);
                             }
 
                             else if (choix == modif)
                             {
+                                Affichage.afficherAvecPointsSecondes(service.modifierProduit());
 
+                                
                             }
 
                             else if (choix == supprimer)
                             {
+                                Affichage.afficherSansLn("ID à supprimer : ");
+                                String idS = monInput.nextLine();
+                                int idSupp = Integer.parseInt(idS.trim());
 
+                                boolean monBool = service.supprimerProduit(idSupp);
+
+                                if (!monBool)
+                                {
+                                    Affichage.afficherAvecPointsSecondes("ID introuvable");
+                                }
+                                else
+                                {
+                                    Affichage.afficherAvecPointsSecondes("Objet supprimé");
+                                }
                             }
 
                             else if (choix == retour)
@@ -114,6 +132,11 @@ public class Main
                             }
                         }
                     }
+                }
+
+                else if (choix == trier)
+                {
+                    
                 }
 
                 else

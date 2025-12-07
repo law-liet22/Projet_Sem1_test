@@ -3,11 +3,15 @@ import java.util.HashMap;
 
 public class Menus {
     static HashMap<String, Integer> valeursMenuP = new HashMap<>();
+
+    // Menu principal
     static int valSortie = 0;
     static String afficher = "Afficher l'inventaire";
     static int valAfficher = 1;
     static String modifier = "Modifier l'inventaire (ajouter, modifier, supprimer)";
     static int valModifier = 2;
+    static String trier = "Trier l'inventaire";
+    static int valTrier = 3;
 
     // Menu modifications
     static HashMap<String, Integer> valeursMenuM = new HashMap<>();
@@ -29,6 +33,7 @@ public class Menus {
                         Menu principal""" +                                 
                 "\n" + valAfficher+ ". " + afficher + 
                 "\n" + valModifier + ". " + modifier + 
+                "\n" + valTrier + ". " + trier +
                 "\n" + valSortie + ". Arrêt du programme\n------------------------------");
     }
 
@@ -37,6 +42,7 @@ public class Menus {
         valeursMenuP.put("Sortie", valSortie);
         valeursMenuP.put("Afficher", valAfficher);
         valeursMenuP.put("Modifier", valModifier);
+        valeursMenuP.put("Trier", valTrier);
 
         return valeursMenuP;
     }
