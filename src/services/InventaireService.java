@@ -104,12 +104,18 @@ public class InventaireService {
                 if (nQte < 0) return "Quantité invalide (doit être supérieure à 0)";
 
                 // === Saisie du prix ===
+                // Prise en charge de la virgule comme séparateur décimal
                 Affichage.afficherSansLn("Prix : ");
                 String prixS = monInput.nextLine();
                 if (!prixS.isBlank() || prixS != "\0" || prixS != "\n")
                 {
                     try
                     {
+                        // Vérifie et normalise le séparateur décimal
+                        if (prixS.contains(",")) 
+                        {
+                            prixS = prixS.replace(',', '.');
+                        } 
                         // Convertit le prix en nombre décimal
                         double nPrix = Double.parseDouble(prixS.trim());
 
@@ -311,18 +317,27 @@ public class InventaireService {
     /**
      * Supprime un produit de l'inventaire par son ID
      * @param id L'identifiant du produit à supprimer
-     * @return true si suppression réussie, false si produit introuvable
+     * @return 0 si suppression réussie, 1 si produit introuvable, 2 si suppression annulée
      */
-    public boolean supprimerProduit(int id) {
+    public int supprimerProduit(int id) {
         // Recherche le produit
         Produit p = trouverParId(id);
-        if (p == null) return false; // Produit non trouvé
+        if (p == null) return 1; // Produit non trouvé
+
+        // Demander confirmation en affichant produit infos avant suppression  
+        Affichage.afficherLn("\nProduit à supprimer : ");
+        Affichage.afficherLn(p.toString());
+        Affichage.afficherSansLn("\nConfirmer la suppression du produit (O/N) : ");
+        String confirmation = monInput.nextLine();
+        if (!confirmation.equalsIgnoreCase("O")) {
+            return 2; // Suppression annulée
+        }
 
         // Retire le produit de la liste
         inventaire.remove(p);
         // Sauvegarde les modifications
         sauvegarder();
-        return true;
+        return 0;
     }
 
     /**
@@ -387,7 +402,7 @@ public class InventaireService {
             }
 
             // Crée l'interface avec le programme C
-            InterractionCSV inter = new InterractionCSV("/home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/C/trier");
+            InterractionCSV inter = new InterractionCSV("out/C/trier");
 
             // Exécute le tri et retourne le résultat
             return inter.executerTri(dataPath, critere);

@@ -138,6 +138,7 @@ public class Main
                                 else if (choix == modif)
                                 {
                                     // Appelle la méthode de modification et affiche le résultat
+                                    Affichage.afficherLn("Laisser vide si vous voulez garder les mêmes valeurs.");
                                     Affichage.afficherAvecPointsSecondes(service.modifierProduit());
                                 }
 
@@ -150,12 +151,16 @@ public class Main
                                     int idSupp = Integer.parseInt(idS.trim());
 
                                     // Tente de supprimer le produit
-                                    boolean monBool = service.supprimerProduit(idSupp);
+                                    int monBool = service.supprimerProduit(idSupp);
 
                                     // Affiche le résultat de la suppression
-                                    if (!monBool)
+                                    if (monBool == 1)
                                     {
                                         Affichage.afficherAvecPointsSecondes("ID introuvable");
+                                    }
+                                    else if (monBool == 2)
+                                    {
+                                        Affichage.afficherAvecPointsSecondes("Suppression annulée");
                                     }
                                     else
                                     {
@@ -190,7 +195,7 @@ public class Main
                     {
                         // Tri réussi : affiche le fichier trié
                         Affichage.afficherAvecPointsSecondes("Trié avec succès");
-                        TrieService.afficherFichierTrie("/home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/data/inventaire_trie.txt");
+                        TrieService.afficherFichierTrie("out/data/inventaire_trie.txt");
                         Affichage.afficherSansLn("\nAppuyez sur entrer pour continuer...");
                         monInput.nextLine();
                     }

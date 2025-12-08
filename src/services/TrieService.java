@@ -27,7 +27,7 @@ public class TrieService {
             }
 
             // Affiche l'emplacement du fichier trié
-            Affichage.afficherLn("\nVous pouvez retrouver le fihcier ici : /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/data/inventaire_trie.txt");
+            Affichage.afficherLn("\nVous pouvez retrouver le fihcier ici : /home/mat/Bureau/L3/POO_Algo/Projet_Sem1/out/data/inventaire_trie.txt");
         }
         catch (IOException e)
         {

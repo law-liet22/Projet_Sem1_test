@@ -34,7 +34,7 @@ public class Affichage {
         // Boucle pour afficher 3 points avec une pause entre chaque
         for (int i = 0; i < 3; i++) {
             afficherSansLn("."); // Affichage du point
-            Attendre.attendreDouble(1); // Pause d'1 seconde
+            Attendre.attendreDouble(0.7); // Pause d'1 seconde
         }
 
         // Saut de ligne après les points

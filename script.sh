@@ -4,39 +4,39 @@
 
 # === Création de l'arborescence de dossiers pour les fichiers compilés ===
 # -p : crée les dossiers parents si nécessaires, pas d'erreur si déjà existants
-mkdir -p /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/C
-mkdir -p /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/app
-mkdir -p /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/models
-mkdir -p /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/data
+mkdir -p out/C
+mkdir -p out/app
+mkdir -p out/models
+mkdir -p out/data
 
 # === Copie du fichier CSV source vers le répertoire de sortie ===
 # Permet de travailler sur une copie sans modifier l'original
-cp /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/src/data/inventaire.csv /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/data/inventaire.csv
+cp src/data/inventaire.csv out/data/inventaire.csv
 
 # === Compilation du programme C ===
 # gcc : compilateur C
 # -o : spécifie le nom du fichier de sortie
-gcc /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/src/c/trier.c -o /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/C/trier
+gcc src/c/trier.c -o out/C/trier
 
 # === Compilation de tous les fichiers Java ===
 # javac : compilateur Java
 # -d : spécifie le répertoire de destination pour les fichiers .class
 # *.java : compile tous les fichiers Java de chaque package
-javac -d /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/src/app/Main.java /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/src/models/*.java /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/src/services/*.java /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/src/utils/*.java
+javac -d out src/app/Main.java src/models/*.java src/services/*.java src/utils/*.java
 
 # === Ajout des droits d'exécution au programme C compilé ===
 # chmod +x : rend le fichier exécutable
-chmod +x /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/C/trier
+chmod +x out/C/trier
 
 # === Exécution du programme Java ===
 # java : interpréteur Java
 # -cp : spécifie le classpath (chemin des classes)
 # app.Main : classe principale à exécuter (package.classe)
-java -cp /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out app.Main
+java -cp out app.Main
 
 # === Sauvegarde du CSV modifié vers le dossier source ===
 # Copie les modifications apportées pendant l'exécution vers le fichier source
-cp /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/data/inventaire.csv /home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/src/data/inventaire.csv
+cp out/data/inventaire.csv src/data/inventaire.csv
 
 # === Nettoyage optionnel des fichiers compilés ===
 # Demande à l'utilisateur s'il souhaite supprimer les fichiers temporaires

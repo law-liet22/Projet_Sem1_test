@@ -5,12 +5,12 @@ package utils;
  * Centralise la configuration du chemin du fichier CSV
  */
 public class DataPath {
-    // Chemin absolu vers le fichier CSV de l'inventaire
-    private static String dataPath = "/home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/data/inventaire.csv";
+    // Chemin relatif vers le fichier CSV de l'inventaire
+    private static String dataPath = "out/data/inventaire.csv";
     
     /**
      * Retourne le chemin vers le fichier de données de l'inventaire
-     * @return Le chemin absolu du fichier CSV
+     * @return Le chemin relatif du fichier CSV
      */
     public static String getDataPath()
     {
