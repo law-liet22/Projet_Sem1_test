@@ -375,20 +375,26 @@ public class InventaireService {
         Affichage.afficherLn("6 = prix unitaire");
         Affichage.afficherLn("7 = seul réapprovisionnement");
         Affichage.afficherSansLn("> ");
-
-        // Récupère le choix de l'utilisateur
-        int critere = Integer.parseInt(monInput.nextLine());
-
-        // Vérifie que le critère est dans la plage valide
-        if (critere < 1 || critere > 7)
+        try
         {
-            return -2; // Critère invalide
+            // Récupère le choix de l'utilisateur
+            int critere = Integer.parseInt(monInput.nextLine());
+
+            // Vérifie que le critère est dans la plage valide
+            if (critere < 1 || critere > 7)
+            {
+                return -2; // Critère invalide
+            }
+
+            // Crée l'interface avec le programme C
+            InterractionCSV inter = new InterractionCSV("/home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/C/trier");
+
+            // Exécute le tri et retourne le résultat
+            return inter.executerTri(dataPath, critere);
         }
-
-        // Crée l'interface avec le programme C
-        InterractionCSV inter = new InterractionCSV("/home/mat/Bureau/L3/POO_Algo/Projet_Sem1_test/out/C/trier");
-
-        // Exécute le tri et retourne le résultat
-        return inter.executerTri(dataPath, critere);
+        catch (NumberFormatException e)
+        {
+            return -3; // Critère invalide
+        }
     }
 }

@@ -32,6 +32,8 @@ public class Main
         HashMap<String, Integer> valeursMenuM = Menus.getValeursMenuM();
         // Récupération du chemin vers le fichier de données
         String dataPath = DataPath.getDataPath();
+        // Crée une nouvelle instance du service d'inventaire
+        InventaireService service = new InventaireService(dataPath);
 
         // Hook pour afficher un message lors de la fermeture du programme
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -42,8 +44,6 @@ public class Main
         // Boucle principale du menu
         while (menu)
         {
-            // Crée une nouvelle instance du service d'inventaire
-            InventaireService service = new InventaireService(dataPath);
             // Variable pour contrôler la boucle du menu modification
             boolean menuModification = true;
             // Affiche le menu principal
@@ -204,10 +204,16 @@ public class Main
                         // Critère de tri invalide
                         Affichage.afficherAvecPointsSecondes("Veuillez entrer un critère valide");
                     }
-                    else
+                    else if (tri == -3)
                     {
                         // Autre erreur : affiche le code d'erreur
-                        Affichage.afficherAvecPointsSecondes("Erreur : " + Integer.toString(tri));
+                        Affichage.afficherAvecPointsSecondes("Veuillez entrer un entier");
+                    }
+
+                    else
+                    {
+                        // Choix non implémenté
+                        Affichage.afficherAvecPointsSecondes("Le choix que vous avez entré n'est pas disponible.");
                     }
                 }
 
